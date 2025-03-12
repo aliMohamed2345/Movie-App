@@ -1,12 +1,11 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { setCategory, setMedia } from "@/app/redux/Slices/MediaSlice";
 import MediaTemplate from "@/app/Components/Media/MediaTemplate";
+import { useDispatch } from "react-redux";
 import { setURL } from "@/app/redux/Slices/SearchSlice";
-
-const PopularMovies = () => {
+const OnTheAirTV = () => {
   const dispatch = useDispatch();
   const media = useSearchParams().get("media") || "";
   const category = useSearchParams().get("category") || "";
@@ -22,4 +21,4 @@ const PopularMovies = () => {
   return <MediaTemplate />;
 };
 
-export default PopularMovies;
+export default OnTheAirTV;

@@ -5,7 +5,10 @@ import { motion } from "framer-motion";
 import { FaChevronLeft, FaChevronRight, FaStar } from "react-icons/fa";
 import { useFetch } from "@/app/hooks/useFetch";
 import { moviesGenres } from "@/app/data/movieCategories";
-import CarouseLoading from "./CarouseLoading";
+import CarouseLoading from "../Loading/CarouseLoading";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+import Link from "next/link";
 
 export interface moviesProps {
   results: [
@@ -29,7 +32,8 @@ export interface moviesProps {
   ];
 }
 
-function Carousel({ media }: { media: `movie` | `tv` }) {
+function Carousel() {
+  const { media } = useSelector((state: RootState) => state.Media);
   const { data, loading } = useFetch<moviesProps>({
     url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/discover/${media}?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&limit=5`,
     options: {
@@ -40,7 +44,6 @@ function Carousel({ media }: { media: `movie` | `tv` }) {
       },
     },
   });
-
   const [showControls, setShowControls] = useState(false);
   const fetchedMovies = data?.results.slice(0, 5) || [];
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -119,9 +122,18 @@ function Carousel({ media }: { media: `movie` | `tv` }) {
                   movie.popularity.toString()[1]
                 }K`}
               </p>
-              <p className="line-clamp-3 overflow-hidden text-ellipsis">
+              <p className="line-clamp-3 overflow-hidden text-ellipsis mb-5">
                 {movie.overview}
               </p>
+              <Link
+                className="p-2 text-xl hover:bg-movie_color_hover transition-all bg-movie_color rounded-md"
+                href={{
+                  pathname: `${media}/${movie.id}`,
+                  query: { media, id: movie.id },
+                }}
+              >
+                View Details
+              </Link>
             </div>
           </motion.div>
         ))

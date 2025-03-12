@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { PiListBold } from "react-icons/pi";
-// import { sideMenuOptions } from "../../utils/Object";
 import { IoArrowBackSharp } from "react-icons/io5";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -37,7 +36,7 @@ const SideMenu = () => {
           <div className="text-center ">
             <Link
               href="/"
-              className="text-xl text-movie_color font-extrabold flex items-center gap-2 px-4 py-2 hover:text-text_color rounded-full transition-transform transform hover:scale-105"
+              className="text-xl text-movie_color hover:text-movie_color_hover font-extrabold flex items-center gap-2 px-4 py-2 rounded-full transition-transform transform hover:scale-105"
             >
               <span className="tracking-wide">MovFlex</span>
             </Link>

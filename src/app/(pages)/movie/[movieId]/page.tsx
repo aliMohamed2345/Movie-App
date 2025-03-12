@@ -15,7 +15,7 @@ const MovieId = () => {
       },
     },
   });
-  console.log(data);
+  console.log(data)
   return (
     <>
       <p>hey</p>

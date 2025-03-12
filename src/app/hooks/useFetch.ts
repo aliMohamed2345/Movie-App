@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 
 interface UseFetchProps {
-  url: string;
+  url: string | null;
   options?: RequestInit;
 }
 
@@ -15,7 +15,7 @@ export const useFetch = <T>({ url, options = {} }: UseFetchProps) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(url, options);
+        const response = await fetch(url?url:'', options);
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
@@ -33,7 +33,7 @@ export const useFetch = <T>({ url, options = {} }: UseFetchProps) => {
     };
 
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url]);
 
   return { data, error, loading };

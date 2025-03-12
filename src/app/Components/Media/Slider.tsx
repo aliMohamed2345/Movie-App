@@ -5,9 +5,13 @@ import { Navigation, Scrollbar } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useFetch } from "@/app/hooks/useFetch";
-import SliderLoading from "./SliderLoading";
+import SliderLoading from "../Loading/SliderLoading";
 import SeeMore from "./SeeMore";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+import { setMedia } from "@/app/redux/Slices/MediaSlice";
+import { useEffect } from "react";
 export interface TvProps {
   results: [
     {
@@ -30,11 +34,9 @@ export interface TvProps {
     }
   ];
 }
-interface SliderProps {
-  media: `movie` | `tv`;
-  category: string;
-}
-const Slider = ({ media, category }: SliderProps) => {
+const Slider = ({ category }: { category: string }) => {
+  const dispatch = useDispatch();
+  const { media } = useSelector((state: RootState) => state.Media);
   //get the current media props
   const currentMedia = media === `movie` ? `movies` : `TV Shows`;
   //validate the title to be added to the slider
@@ -52,14 +54,19 @@ const Slider = ({ media, category }: SliderProps) => {
       },
     },
   });
-  console.log(data);
+  useEffect(() => {
+    dispatch(setMedia(currentMedia === "movies" ? `movie` : `tv`));
+  }, [dispatch, currentMedia]);
   return (
     <div className="relative container mx-auto text-text_color my-5  ">
       <div className="flex items-center justify-between mx-2">
-        <h4 className="font-bold text-ld sm:text-xl my-3">{validTitle}</h4>
+        <h4 className="font-bold text-md sm:text-xl my-3">{validTitle}</h4>
         <Link
-          href={`/${media}/${category}`}
-          className="text-movie_color hover:text-text_color hidden sm:block"
+          href={{
+            pathname: `/${media}/${category}`,
+            query: { media, category },
+          }}
+          className="text-movie_color hover:text-movie_color_hover hidden sm:block"
         >
           See more
         </Link>
@@ -97,25 +104,19 @@ const Slider = ({ media, category }: SliderProps) => {
             spaceBetween: 25,
           },
         }}
-        className="mySwiper mx-auto cursor-grab bg-primary"
+        className="mySwiper mx-auto cursor-grab bg-primary flex items-center"
       >
         {data?.results.map((object, i) => {
           if (i === data.results.length - 1) {
             return (
               <SwiperSlide key={i}>
-                <SeeMore
-                  media={currentMedia === "movies" ? `movie` : `tv`}
-                  category={category}
-                />
+                <SeeMore category={category} />
               </SwiperSlide>
             );
           }
           return (
             <SwiperSlide key={i} className="w-[250px]">
-              <MediaCard
-                media={currentMedia === "movies" ? `movie` : `tv`}
-                mediaData={object}
-              />
+              <MediaCard mediaData={object} />
             </SwiperSlide>
           );
         })}

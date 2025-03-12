@@ -11,10 +11,11 @@ export default {
       colors: {
         primary: "var(--primary-color)",
         secondary: "var(--secondary-color)",
-        text_color: 'var(--text-color)',
-        secondary_text_color: 'var(--text-secondary-color)',
+        text_color: "var(--text-color)",
+        secondary_text_color: "var(--text-secondary-color)",
         background_hover: "var(--bg-hover)",
         movie_color: "var(--movie_color)",
+        movie_color_hover: `var(--movie_color_hover)`,
       },
     },
   },

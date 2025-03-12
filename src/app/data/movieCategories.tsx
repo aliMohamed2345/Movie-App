@@ -46,6 +46,6 @@ export const movieCategories = [
 export const tvCategories = [
   "Airing Today",
   "on the air",
-  "Top Rated",
   "Popular",
+  "Top Rated",
 ];

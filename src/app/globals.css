@@ -9,6 +9,7 @@
   --text-secondary-color: #000;
   --bg-hover: #cbd5e1;
   --movie_color: #e50914;
+  --movie_color_hover: #dc2626;
 }
 html.dark {
   --primary-color: #000000;
@@ -17,6 +18,7 @@ html.dark {
   --text-secondary-color: #fff;
   --bg-hover: #6b7280;
   --movie_color: #b20710;
+  --movie_color_hover: #991b1b;
 }
 
 body {

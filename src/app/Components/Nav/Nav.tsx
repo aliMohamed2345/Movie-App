@@ -1,12 +1,11 @@
 "use client";
-// import SearchArea from "@/app/Components/Nav/SearchArea";
 import Theme from "@/app/Components/Nav/Theme";
 import Link from "next/link";
 import SideMenu from "./SideMenu";
 import { usePathname } from "next/navigation";
-// import ResponsiveSearchArea from "@/app/Components/Nav/ResponsiveSearchArea";
+import Search from "./Search";
 const Nav = () => {
-  const pathname = usePathname(); // Get current path
+  const pathname = usePathname();
   return (
     <header className="bg-secondary text-text_color fixed w-full z-10 shadow-md">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
@@ -16,7 +15,7 @@ const Nav = () => {
             <SideMenu />
             <Link
               href="/"
-              className="text-xl text-movie_color font-extrabold flex items-center gap-2 px-4 py-2 hover:text-text_color rounded-full transition-transform transform hover:scale-105"
+              className="text-xl text-movie_color hover:text-movie_color_hover font-extrabold flex items-center gap-2 px-4 py-2 rounded-full transition-transform transform hover:scale-105"
             >
               <span className="tracking-wide">MovFlex</span>
             </Link>
@@ -56,7 +55,10 @@ const Nav = () => {
               Actors
             </Link>
           </div>
-          <Theme />
+          <div className="flex gap-1 items-center">
+            <Search />
+            <Theme />
+          </div>
         </div>
       </div>
     </header>

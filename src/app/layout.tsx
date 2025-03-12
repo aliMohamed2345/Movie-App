@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Nav from "./Components/Nav/Nav";
+import ReduxProvider from "./ReduxProvider";
+import ScrollToTop from "./Components/Home/ScrollToTop";
+import { Suspense } from "react";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -20,16 +23,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{ 
+}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-primary`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased transition-all bg-primary `}
       >
-        <Nav />
-        {children}
+        <ReduxProvider>
+          <Nav />
+          <ScrollToTop />
+          <Suspense>{children}</Suspense>
+        </ReduxProvider>
       </body>
     </html>
   );

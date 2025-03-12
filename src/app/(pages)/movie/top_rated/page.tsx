@@ -1,9 +1,24 @@
-import React from 'react'
+"use client";
+import { useDispatch } from "react-redux";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { setMedia, setCategory } from "@/app/redux/Slices/MediaSlice";
+import MediaTemplate from "@/app/Components/Media/MediaTemplate";
+import { setURL } from "@/app/redux/Slices/SearchSlice";
+const TopRatedMovies = () => {
+  const dispatch = useDispatch();
+  const media = useSearchParams().get("media") || "";
+  const category = useSearchParams().get("category") || "";
 
-const TopRated = () => {
-  return (
-    <div>TopRated</div>
-  )
-}
+  useEffect(() => {
+    dispatch(setMedia(media));
+    dispatch(setCategory(category));
+    dispatch(
+      setURL(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${media}/${category}`)
+    );
+  }, [dispatch, media, category]);
 
-export default TopRated
+  return <MediaTemplate />;
+};
+
+export default TopRatedMovies;
