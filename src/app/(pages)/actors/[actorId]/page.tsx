@@ -70,6 +70,7 @@ const ActorId = () => {
           <div className="flex flex-col justify-center sm:flex-row items-center gap-4">
             <div className=" group relative">
               <img
+                loading="lazy"
                 src={pic}
                 alt={data?.name}
                 className="rounded-lg object-cover max-w-60 my-4 group-hover:blur-sm transition-all"

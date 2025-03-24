@@ -176,6 +176,7 @@ const MediaScenesSlider = () => {
           onClick={() => setCurrentImage(null)}
         >
           <img
+          loading="lazy"
             src={`${process.env.NEXT_PUBLIC_BASE_IMAGE_URL}/original/${currentImage}`}
             alt="Current backdrop"
             className="object-cover w-[90vw] sm:w-[72vw] rounded-lg container mx-auto"

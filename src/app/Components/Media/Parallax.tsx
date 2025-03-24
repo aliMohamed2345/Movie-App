@@ -167,6 +167,7 @@ function Parallax() {
           fetchedMovies.map((movie, index) => (
             <button key={index}>
               <img
+              loading="lazy"
                 src={`${process.env.NEXT_PUBLIC_BASE_IMAGE_URL}/w1280${movie.poster_path}`}
                 alt={movie.original_title}
                 onClick={() => setCurrentIndex(index)}
