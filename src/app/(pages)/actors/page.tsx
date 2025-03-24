@@ -33,20 +33,22 @@ const Actors = () => {
     }
   }, [data]);
 
-  // console.log(actorsData);
   return (
     <div
       className="container mx-auto flex flex-col items-center"
       ref={lastElementRef}
     >
-      <p className="pt-16 my-4">Popular Actors And Directors</p>
+      <p className="pt-16 my-4 text-2xl text-movie_color">
+        Popular Actors And Directors
+      </p>
       {loading ? (
         <MediaGridLoading />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  justify-center gap-3 ">
           {actorsData?.length > 0 &&
             actorsData.map((actorInfo, i) => {
-              const { name, id, popularity,profile_path } = actorInfo;
+              const { name, id, popularity, profile_path } = actorInfo;
+              if (!profile_path) return;
               return (
                 <div
                   key={i}
@@ -62,7 +64,6 @@ const Actors = () => {
                 </div>
               );
             })}
-          {/* <ActorCard /> */}
         </div>
       )}
     </div>

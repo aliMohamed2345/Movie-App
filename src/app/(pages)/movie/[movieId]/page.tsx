@@ -1,36 +1,21 @@
 "use client";
-import React from "react";
+import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { useFetch } from "@/app/hooks/useFetch";
+import { useDispatch } from "react-redux";
+import { setMediaId } from "@/app/redux/Slices/MediaDataSlice";
+import { setMedia } from "@/app/redux/Slices/MediaSlice";
+import MediaIdTemplate from "@/app/Components/Media/MediaIdTemplate";
 const MovieId = () => {
+  const dispatch = useDispatch();
   const media = useSearchParams().get("media") || "";
   const id = useSearchParams().get("id") || "";
-  const { data } = useFetch({
-    url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/${media}/${+id}`,
-    options: {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_ACCESS_TOKEN}`,
-      },
-    },
-  });
-  console.log(data)
-  return (
-    <>
-      <p>hey</p>
-      <p>hey</p>
-      <p>hey</p>
-      <p>hey</p>
-      <p>hey</p>
-      <p>hey</p>
-      <p>hey</p>
-      <p>hey</p>
-      <p>hey</p>
-      <p>hey</p>
-      <p>hey</p>
-    </>
-  );
+
+  useEffect(() => {
+    dispatch(setMedia(media));
+    dispatch(setMediaId(id));
+  }, [dispatch, media, id]);
+
+  return <MediaIdTemplate />;
 };
 
 export default MovieId;

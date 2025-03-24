@@ -5,7 +5,6 @@ import { useFetch } from "@/app/hooks/useFetch";
 import Link from "next/link";
 import { useState, useEffect, useRef, MouseEvent } from "react";
 import { IoMdSearch, IoMdClose } from "react-icons/io";
-import { useRouter } from "next/navigation";
 import { MdBrokenImage } from "react-icons/md";
 interface searchQueryProps {
   results: [
@@ -23,7 +22,6 @@ interface searchQueryProps {
 }
 type mediaProps = `movie` | `tv` | `person`;
 const Search = () => {
-  const router = useRouter();
   const [openSearch, setOpenSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentMedia, setCurrentMedia] = useState<mediaProps>(`movie`);
@@ -54,7 +52,6 @@ const Search = () => {
         setIsDropdownOpened(false); // Close dropdown as well
       }
     };
-
     document.addEventListener("mousedown", (e) => handleClickOutside(e));
     return () => {
       document.removeEventListener("mousedown", (e) => handleClickOutside(e));
@@ -62,7 +59,6 @@ const Search = () => {
   }, []);
   //give the first 5 results related to that search
   const QueryData = data?.results.slice(0, 5);
-
   function handleSearchButton(
     e:
       | React.KeyboardEvent<HTMLInputElement>
@@ -79,7 +75,6 @@ const Search = () => {
     // Trigger your specific action here.
     setSearchQuery("");
     setOpenSearch(false);
-    router.push(`/${searchQuery}/?q=${searchQuery}&media=${currentMedia}`);
   }
   return (
     <>
@@ -98,7 +93,9 @@ const Search = () => {
         <Link
           onClick={(e) => handleSearchButton(e)}
           href={{
-            pathname: `/${searchQuery}`,
+            pathname: `/search/${
+              currentMedia === `person` ? `person` : `media`
+            }/${searchQuery}`,
             query: { media: currentMedia, q: searchQuery },
           }}
           className="bg-movie_color p-2 rounded-l-full text-white h-10 flex items-center justify-center transition-all hover:bg-movie_color_hover"
@@ -107,7 +104,6 @@ const Search = () => {
         </Link>
         <div className="relative">
           <input
-            onKeyDown={(e) => handleSearchButton(e)}
             autoFocus
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -130,7 +126,7 @@ const Search = () => {
 
             {isDropdownOpened && (
               <div
-                className={`bg-primary w-20 py-2 rounded-md absolute left-0 flex flex-col gap-2 transition-all px-1`}
+                className={`bg-primary w-20 py-2 rounded-md absolute top-10 left-0 flex flex-col gap-2 transition-all px-1 z-20`}
               >
                 <button
                   className="hover:bg-background_hover rounded-md transition-all p-1"
@@ -170,45 +166,59 @@ const Search = () => {
           <div className="absolute left-1/2 -translate-x-1/2 w-[70vw] sm:w-[50vw] bg-secondary  rounded-lg top-[60px] mx-auto">
             {QueryData && QueryData.length > 0 ? (
               <div className="flex  flex-col">
-                {QueryData.map((object, i) => (
-                  <Link
-                    onClick={() => setOpenSearch((prev) => !prev)}
-                    href={`/movie/${object.id}`}
-                    key={i}
-                    className="flex rounded-lg items-center hover:bg-background_hover transition-all gap-1.5 sm:gap-5 p-2 cursor-pointer"
-                  >
-                    {object.poster_path ? (
-                      <img
-                        src={`https://image.tmdb.org/t/p/original/${
-                          object.poster_path || object.profile_path
-                        }`}
-                        alt={object?.title}
-                        loading="lazy"
-                        className={`rounded-sm w-10 h-16 object-cover`}
-                      />
-                    ) : (
-                      <span className="flex justify-center items-center w-10 h-16 flex-col text-text_color">
-                        <MdBrokenImage size={50} color={`var(--movie_color)`} />
-                        <p className="text-center text-[9px]">no image</p>
-                      </span>
-                    )}
-                    <div className="flex flex-col gap-1">
-                      <span className="font-bold text-sm sm:text-base flex items-center gap-1">
-                        {object.original_language && (
-                          <span className="text-[8px] text-movie_color">
-                            [{object.original_language}]
-                          </span>
-                        )}
-                        {object.title || object.name}
-                      </span>
-                      <span className="text-sm sm:text-base">
-                        {object?.release_date
-                          ? object?.release_date.split("-")[0]
-                          : object?.first_air_date?.split("-")[0]}
-                      </span>
-                    </div>
-                  </Link>
-                ))}
+                {QueryData.map((object, i) => {
+                  if (object.profile_path === null) return;
+                  return (
+                    <Link
+                      onClick={() => setOpenSearch((prev) => !prev)}
+                      href={
+                        currentMedia === `movie`
+                          ? `/movie/${object.id}`
+                          : `/actors/${object.name?.split(` `).join(`_`)}?id=${
+                              object.id
+                            }`
+                      }
+                      key={i}
+                      className="flex rounded-lg items-center hover:bg-background_hover transition-all gap-1.5 sm:gap-5 p-2 cursor-pointer"
+                    >
+                      {object.poster_path || object.profile_path ? (
+                        <img
+                          src={`${
+                            process.env.NEXT_PUBLIC_BASE_IMAGE_URL
+                          }/original/${
+                            object.poster_path || object.profile_path
+                          }`}
+                          alt={object?.title}
+                          loading="lazy"
+                          className={`rounded-sm w-10 h-16 object-cover`}
+                        />
+                      ) : (
+                        <span className="flex justify-center items-center w-10 h-16 flex-col text-text_color">
+                          <MdBrokenImage
+                            size={50}
+                            color={`var(--movie_color)`}
+                          />
+                          <p className="text-center text-[9px]">no image</p>
+                        </span>
+                      )}
+                      <div className="flex flex-col gap-1">
+                        <span className="font-bold text-sm sm:text-base flex items-center gap-1">
+                          {object.original_language && (
+                            <span className="text-[8px] text-movie_color">
+                              [{object.original_language}]
+                            </span>
+                          )}
+                          {object.title || object.name}
+                        </span>
+                        <span className="text-sm sm:text-base">
+                          {object?.release_date
+                            ? object?.release_date.split("-")[0]
+                            : object?.first_air_date?.split("-")[0]}
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             ) : (
               <p className="p-2 text-center font-bold">no results found</p>

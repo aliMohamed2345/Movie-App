@@ -28,9 +28,13 @@ interface MediaDataProps {
 }
 const MediaCard = ({ mediaData }: MediaDataProps) => {
   const { media } = useSelector((state: RootState) => state.Media);
-  const pic = `https://image.tmdb.org/t/p/w780/${mediaData.poster_path}`;
+  const pic = `${process.env.NEXT_PUBLIC_BASE_IMAGE_URL}/w780/${mediaData.poster_path}`;
   return (
-    <div
+    <Link
+      href={{
+        pathname: `/${media}/${mediaData.id}`,
+        query: { media, id: mediaData.id },
+      }}
       className={`group transition-all cursor-pointer border-[3px] border-text_color hover:border-movie_color ${
         !mediaData.poster_path && `justify-around`
       } flex flex-col gap-2 relative bg-secondary w-full h-full min-h-[425px] rounded-lg overflow-hidden text-text_color`}
@@ -54,15 +58,6 @@ const MediaCard = ({ mediaData }: MediaDataProps) => {
               : tvGenres[id as keyof typeof tvGenres]}
           </span>
         ))}
-        <Link
-          className="p-2 hover:bg-movie_color_hover transition-all bg-movie_color rounded-md"
-          href={{
-            pathname: `${media}/${mediaData.id}`,
-            query: { media, id: mediaData.id },
-          }}
-        >
-          View Details
-        </Link>
       </div>
       {mediaData.poster_path ? (
         <img
@@ -79,17 +74,17 @@ const MediaCard = ({ mediaData }: MediaDataProps) => {
         </span>
       )}
       {/* Info Section */}
-      <div className="p-2 flex flex-col justify-center">
-        <h6 className="text-text_color p-1 border-[1px] gap-1 flex justify-center items-center font-bold text-center bg-primary rounded-full border-text_color sm:text-sm">
+      <div className="p-2 flex flex-col justify-center text-text_color">
+        <h6 className=" p-1 gap-1 flex justify-center font-bold text-center sm:text-base text-lg">
           {mediaData?.original_language !== "en" && (
-            <span className="text-[8px] text-movie_color">
+            <span className="text-lg sm:text-base  text-movie_color">
               [{mediaData?.original_language}]
             </span>
           )}
           {mediaData?.title || mediaData?.name}
         </h6>
       </div>
-    </div>
+    </Link>
   );
 };
 

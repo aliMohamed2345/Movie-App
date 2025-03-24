@@ -14,27 +14,19 @@ const Nav = () => {
           <div className="flex items-center gap-3">
             <SideMenu />
             <Link
-              href="/"
-              className="text-xl text-movie_color hover:text-movie_color_hover font-extrabold flex items-center gap-2 px-4 py-2 rounded-full transition-transform transform hover:scale-105"
+              href="/movie"
+              className="text-md sm:text-xl text-movie_color hover:text-movie_color_hover font-extrabold flex items-center gap-2 px-4 py-2 rounded-full transition-transform transform hover:scale-105"
             >
-              <span className="tracking-wide">MovFlex</span>
+              <span className="tracking-wide">Movie-App</span>
             </Link>
           </div>
           {/* Tabs */}
           <div className="hidden gap-6 sm:flex">
             <Link
-              href="/"
-              className={`${
-                pathname === `/` && `bg-background_hover`
-              } hover:bg-background_hover px-4 py-2 rounded-full transition-all hover:text-text_color flex items-center gap-1`}
-            >
-              Home
-            </Link>
-            <Link
               href="/movie"
               className={`${
-                pathname === `/movies` && `bg-background_hover`
-              } hover:bg-background_hover px-4 py-2 rounded-full transition-all hover:text-text_color flex items-center gap-1`}
+                pathname === `/movie` && `bg-background_hover`
+              } hover:bg-background_hover px-4 py-2 rounded-full transition-all hover:text-text_color flex items-center gap-1 `}
             >
               Movies
             </Link>
@@ -42,7 +34,7 @@ const Nav = () => {
               href="/tv"
               className={`${
                 pathname === `/tv` && `bg-background_hover`
-              } hover:bg-background_hover px-4 py-2 rounded-full transition-all hover:text-text_color flex items-center gap-1`}
+              } hover:bg-background_hover px-4 py-2 rounded-full transition-all hover:text-text_color flex items-center gap-1 `}
             >
               TV shows
             </Link>

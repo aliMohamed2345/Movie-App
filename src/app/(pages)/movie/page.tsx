@@ -1,5 +1,5 @@
 "use client";
-import Carousel from "@/app/Components/Media/Carousel";
+import Carousel from "@/app/Components/Media/Parallax";
 import { movieCategories } from "@/app/data/movieCategories";
 import React, { useEffect } from "react";
 import Slider from "@/app/Components/Media/Slider";

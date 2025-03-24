@@ -7,14 +7,14 @@ import Link from "next/link";
 
 const SideMenu = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const pathname = usePathname(); // Get current path
+  const pathname = usePathname();
 
   return (
     <>
       <button
         onClick={() => setIsOpen(true)}
         aria-label="Open menu"
-        className="p-1 rounded-full transition-all ease-in-out hover:bg-background_hover font-bold sm:hidden opacity-80 hover:opacity-100 text-text_color"
+        className="p-1 rounded-full transition-all ease-in-out hover:bg-background_hover hover:text-white font-bold sm:hidden opacity-80 hover:opacity-100 text-text_color"
       >
         <PiListBold size={25} />
       </button>
@@ -35,29 +35,20 @@ const SideMenu = () => {
 
           <div className="text-center ">
             <Link
-              href="/"
+              href="/movie"
               className="text-xl text-movie_color hover:text-movie_color_hover font-extrabold flex items-center gap-2 px-4 py-2 rounded-full transition-transform transform hover:scale-105"
             >
-              <span className="tracking-wide">MovFlex</span>
+              <span className="tracking-wide">Movie-App</span>
             </Link>
           </div>
         </div>
         <ul className="space-y-2">
           <Link
-            title={`Home`}
-            href={`/`}
-            className={`flex ${
-              pathname === "/" && `bg-movie_color text-white`
-            } items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-movie_color dark:hover:text-white transition-all mx-4 text-lg text-text_color`}
-          >
-            Home
-          </Link>
-          <Link
             title={`Movies`}
             href={`/movie`}
             className={`flex ${
               pathname === "/movie" && `bg-movie_color text-white`
-            } items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-movie_color dark:hover:text-white transition-all mx-4 text-lg text-text_color`}
+            } items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-movie_color hover:text-white transition-all mx-4 text-lg text-text_color`}
           >
             Movies
           </Link>
@@ -66,7 +57,7 @@ const SideMenu = () => {
             href={`/tv`}
             className={`flex ${
               pathname === "/tv" && `bg-movie_color text-white`
-            } items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-movie_color dark:hover:text-white transition-all mx-4 text-lg text-text_color`}
+            } items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-movie_color hover:text-white transition-all mx-4 text-lg text-text_color`}
           >
             TV Shows
           </Link>
@@ -75,7 +66,7 @@ const SideMenu = () => {
             href={`/actors`}
             className={`flex ${
               pathname === "/actors" && `bg-movie_color text-white`
-            } items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-movie_color dark:hover:text-white transition-all mx-4 text-lg text-text_color`}
+            } items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-movie_color hover:text-white transition-all mx-4 text-lg text-text_color`}
           >
             Actors
           </Link>
@@ -93,5 +84,4 @@ const SideMenu = () => {
     </>
   );
 };
-
 export default SideMenu;

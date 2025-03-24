@@ -5,7 +5,7 @@ import MediaGridLoading from "../Loading/MediaGridLoading";
 import MediaGrid from "./MediaGrid";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
-import { moviesProps } from "./Carousel";
+import { moviesProps } from "./Parallax";
 export interface categoryDataProps extends moviesProps {
   total_pages: number;
   total_results: number;

@@ -32,7 +32,11 @@ const PageSearchBar = () => {
       return;
     }
     // Trigger your specific action here.
-    router.push(`/${searchQuery}/?q=${searchQuery}&media=${currentMedia}`);
+    router.push(
+      `/search/${
+        currentMedia === "person" ? `person` : `media`
+      }/${searchQuery}/?q=${searchQuery}&media=${currentMedia}`
+    );
   }
 
   const handleMediaSelection = (selectedMedia: "movie" | "tv" | "person") => {
@@ -42,11 +46,13 @@ const PageSearchBar = () => {
   };
 
   return (
-    <div className="pt-20 border-t-[1px] border-primary absolute left-1/2 z-[5] -translate-x-1/2 w-full flex items-center transition-all justify-center">
+    <div className="pt-20 text-text_color border-t-[1px] border-primary absolute left-1/2 z-[5] -translate-x-1/2 w-full flex items-center transition-all justify-center">
       <Link
         onClick={(e) => handleSearchButton(e)}
         href={{
-          pathname: `/${searchQuery}`,
+          pathname: `/search/${
+            currentMedia === `person` ? `person` : `media`
+          }/${searchQuery}`,
           query: { media: currentMedia, q: searchQuery },
         }}
         className="bg-movie_color p-2 rounded-l-full text-white h-12 flex items-center justify-center transition-all hover:bg-movie_color_hover"
@@ -61,7 +67,7 @@ const PageSearchBar = () => {
           onChange={(e) => dispatch(setSearchQuery(e.target.value))}
           type="text"
           placeholder="Search..."
-          className="w-[65vw] sm:w-[50vw] bg-secondary outline-none text-lg pl-4 h-12"
+          className="w-[65vw] sm:w-[50vw] bg-secondary outline-none text-lg pl-4 h-12 "
         />
         <div className="absolute top-1/2 -translate-y-1/2 -right-[40px] w-20">
           <button

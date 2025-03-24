@@ -1,7 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     remotePatterns: [
       {
@@ -9,6 +7,15 @@ const nextConfig: NextConfig = {
         hostname: "image.tmdb.org",
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/movie",
+        permanent: true, 
+      },
+    ];
   },
 };
 
