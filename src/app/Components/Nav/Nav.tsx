@@ -26,7 +26,7 @@ const Nav = () => {
               href="/movie"
               className={`${
                 pathname === `/movie` && `bg-background_hover`
-              } hover:bg-background_hover px-4 py-2 rounded-full transition-all hover:text-text_color flex items-center gap-1 `}
+              } hover:bg-background_hover px-4 py-2 rounded-full transition-all hover:text-text_color flex items-center gap-1`}
             >
               Movies
             </Link>
