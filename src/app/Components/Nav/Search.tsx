@@ -173,7 +173,7 @@ const Search = () => {
                       onClick={() => setOpenSearch((prev) => !prev)}
                       href={
                         currentMedia === `movie`
-                          ? `/movie/${object.id}`
+                          ? `/movie/${object.id}?media=${currentMedia}&id=${object.id}`
                           : `/actors/${object.name?.split(` `).join(`_`)}?id=${
                               object.id
                             }`
