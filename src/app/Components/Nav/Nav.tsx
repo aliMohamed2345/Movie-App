@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Search from "./Search";
 const Nav = () => {
   const pathname = usePathname();
+  console.log(pathname);
   return (
     <header className="bg-secondary text-text_color fixed w-full z-10 shadow-md">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
@@ -25,7 +26,7 @@ const Nav = () => {
             <Link
               href="/movie"
               className={`${
-                pathname === `/movie` && `bg-background_hover`
+                pathname.includes(`/movie`) && `bg-background_hover`
               } hover:bg-background_hover px-4 py-2 rounded-full transition-all hover:text-text_color flex items-center gap-1`}
             >
               Movies
@@ -33,7 +34,7 @@ const Nav = () => {
             <Link
               href="/tv"
               className={`${
-                pathname === `/tv` && `bg-background_hover`
+                pathname.includes(`/tv`) && `bg-background_hover`
               } hover:bg-background_hover px-4 py-2 rounded-full transition-all hover:text-text_color flex items-center gap-1 `}
             >
               TV shows
@@ -41,7 +42,7 @@ const Nav = () => {
             <Link
               href="/actors"
               className={`${
-                pathname === `/actors` && `bg-background_hover`
+                pathname.includes(`/actors`) && `bg-background_hover`
               } hover:bg-background_hover px-4 py-2 rounded-full transition-all hover:text-text_color`}
             >
               Actors

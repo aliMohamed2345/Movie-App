@@ -47,7 +47,7 @@ const SideMenu = () => {
             title={`Movies`}
             href={`/movie`}
             className={`flex ${
-              pathname === "/movie" && `bg-movie_color text-white`
+              pathname.includes("/movie") && `bg-movie_color text-white`
             } items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-movie_color hover:text-white transition-all mx-4 text-lg text-text_color`}
           >
             Movies
@@ -56,7 +56,7 @@ const SideMenu = () => {
             title={`TV Shows`}
             href={`/tv`}
             className={`flex ${
-              pathname === "/tv" && `bg-movie_color text-white`
+              pathname.includes("/tv") && `bg-movie_color text-white`
             } items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-movie_color hover:text-white transition-all mx-4 text-lg text-text_color`}
           >
             TV Shows
@@ -65,7 +65,7 @@ const SideMenu = () => {
             title={`Actors`}
             href={`/actors`}
             className={`flex ${
-              pathname === "/actors" && `bg-movie_color text-white`
+              pathname.includes(`/actors`) && `bg-movie_color text-white`
             } items-center justify-start gap-5 rounded-2xl p-2 font-bold hover:bg-movie_color hover:text-white transition-all mx-4 text-lg text-text_color`}
           >
             Actors
