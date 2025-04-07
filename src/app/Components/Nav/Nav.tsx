@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import Search from "./Search";
 const Nav = () => {
   const pathname = usePathname();
-  console.log(pathname);
   return (
     <header className="bg-secondary text-text_color fixed w-full z-10 shadow-md">
       <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">

@@ -10,6 +10,8 @@ import { FaStar } from "react-icons/fa";
 import MediaSimilarSlider from "./MediaSimilarSlider";
 import MediaScenesSlider from "./MediaScenesSlider";
 import MediaCastSlider from "./MediaCastSlider";
+import Link from "next/link";
+import { moviesGenres, tvGenres } from "@/app/data/movieCategories";
 interface MediaProps {
   adult: boolean;
   backdrop_path: string;
@@ -107,13 +109,21 @@ const MediaIdTemplate = () => {
 
               {/* Genres */}
               <div className="flex flex-wrap gap-3 mt-5 justify-center sm:justify-start">
-                {data?.genres?.map((genre) => (
-                  <button
-                    key={genre.id}
+                {data?.genres?.map((genre, i) => (
+                  <Link
+                    href={{
+                      pathname: `/${media}/genre/${
+                        media === `movie`
+                          ? moviesGenres[genre.id as keyof typeof moviesGenres]
+                          : tvGenres[genre.id as keyof typeof moviesGenres]
+                      }`,
+                      query: { media, genre: genre.id },
+                    }}
+                    key={i}
                     className="bg-movie_color text-white px-3 py-1.5 rounded-md font-semibold hover:bg-movie_color_hover transition-all"
                   >
                     {genre.name}
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>
