@@ -1,3 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
+"use client";
+
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
@@ -10,6 +13,7 @@ import {
   FaImdb,
 } from "react-icons/fa";
 import Link from "next/link";
+
 interface externalIdsProps {
   facebook_id: string | null;
   instagram_id: string | null;
@@ -17,11 +21,11 @@ interface externalIdsProps {
   youtube_id: string | null;
   imdb_id: string | null;
 }
+
 const ActorInfo = () => {
   const [isInfoMenuOpen, setIsInfoMenuOpen] = useState(false);
-  const [currentTab, setCurrentTab] = useState<`biography` | `info`>(
-    `biography`
-  );
+  const [currentTab, setCurrentTab] = useState<"biography" | "info">("biography");
+
   function getActorAge(birthday: string, deathday?: string) {
     if (!deathday) {
       const birthDate = new Date(birthday);
@@ -36,6 +40,7 @@ const ActorInfo = () => {
       return Math.abs(actorAgeDate.getUTCFullYear() - 1970);
     }
   }
+
   const {
     name,
     id,
@@ -46,6 +51,7 @@ const ActorInfo = () => {
     known_for_department,
     gender,
   } = useSelector((state: RootState) => state.Actor);
+
   const { data } = useFetch<externalIdsProps>({
     url: `${process.env.NEXT_PUBLIC_API_BASE_URL}/person/${id}/external_ids`,
     options: {
@@ -56,199 +62,186 @@ const ActorInfo = () => {
       },
     },
   });
+
   return (
     <>
       <button
         onClick={() => setIsInfoMenuOpen(true)}
-        title="see more information"
-        className="p-2 hover:bg-movie_color_hover w-1/3 text-white transition-all bg-movie_color rounded-md mt-4  font-bold"
+        title="See more information"
+        className="px-4 py-2 bg-movie_color text-secondary_text_color rounded-full font-semibold hover:bg-movie_color_hover transition-all duration-300 mt-4"
       >
-        See more
+        See More
       </button>
+
       {isInfoMenuOpen && (
         <div
           onClick={() => setIsInfoMenuOpen(false)}
-          className="fixed inset-0 bg-black/80 z-10"
+          className="fixed inset-0 bg-primary/80 backdrop-blur-sm z-10"
         ></div>
       )}
+
       <div
-        className={`w-[80vw]  min-h-[500px] p-3  z-10 bg-primary duration-300 transform -translate-x-1/2 -translate-y-1/2 fixed left-1/2 text-text_color transition-all ${
-          isInfoMenuOpen
-            ? `opacity-100 scale-100 top-1/2`
-            : `opacity-0 scale-0 top-[-300px]`
-        } rounded-lg container mx-auto`}
+        className={`fixed left-1/2 top-1/2 w-[90vw] sm:w-[80vw] max-w-4xl min-h-[400px] p-6 bg-secondary rounded-2xl shadow-2xl z-20 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ${
+          isInfoMenuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+        }`}
       >
-        <div className="w-[80%] rounded-xl sm:hidden bg-slate-50 mx-auto my-4 relative border-2 border-slate-300 dark:border-gray-700 flex items-center transition-all">
+        {/* Tab Navigation for Small Screens */}
+        <div className="sm:hidden flex justify-center gap-2 mb-4">
           <button
-            type="button"
-            className={`flex items-center rounded-l-lg hover:bg-movie_color hover:text-white justify-center gap-2 p-1 w-1/2 ${
-              biography === "biography" && "bg-movie_color text-white"
-            } transition-all hover:opacity-100`}
             onClick={() => setCurrentTab("biography")}
+            className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 ${
+              currentTab === "biography"
+                ? "bg-movie_color text-secondary_text_color"
+                : "bg-primary text-text_color hover:bg-background_hover"
+            }`}
           >
             Biography
           </button>
-          <div className="h-full bg-slate-400 w-0.5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
           <button
-            type="button"
-            className={`flex items-center rounded-r-lg hover:bg-movie_color hover:text-white justify-center gap-2 p-1 w-1/2 transition-all hover:opacity-100 ${
-              currentTab === "info" && "bg-movie_color text-white"
-            }`}
             onClick={() => setCurrentTab("info")}
+            className={`px-4 py-2 rounded-full font-semibold transition-all duration-300 ${
+              currentTab === "info"
+                ? "bg-movie_color text-secondary_text_color"
+                : "bg-primary text-text_color hover:bg-background_hover"
+            }`}
           >
             Info
           </button>
         </div>
-        {currentTab === `biography` ? (
-          <div className="flex gap-3 mt-4 mx-auto items-center overflow-y-auto h-[450px] flex-col text-center">
-            <h3 className="text-movie_color font-bold text-base sm:text-xl md:text-2xl">
+
+        {/* Tab Navigation for Larger Screens */}
+        <div className="hidden sm:flex absolute -left-16 top-1/2 -translate-y-1/2 flex-col gap-2">
+          <button
+            onClick={() => setCurrentTab("biography")}
+            className={`w-16 h-12 rounded-l-xl bg-primary text-text_color font-semibold transition-all duration-300 ${
+              currentTab === "biography"
+                ? "translate-x-0 opacity-100 bg-movie_color text-secondary_text_color"
+                : "translate-x-2 opacity-70 hover:opacity-90 hover:translate-x-1"
+            } flex items-center justify-center`}
+          >
+            Bio
+          </button>
+          <button
+            onClick={() => setCurrentTab("info")}
+            className={`w-16 h-12 rounded-l-xl bg-primary text-text_color font-semibold transition-all duration-300 ${
+              currentTab === "info"
+                ? "translate-x-0 opacity-100 bg-movie_color text-secondary_text_color"
+                : "translate-x-2 opacity-70 hover:opacity-90 hover:translate-x-1"
+            } flex items-center justify-center`}
+          >
+            Info
+          </button>
+        </div>
+
+        {/* Content */}
+        {currentTab === "biography" ? (
+          <div className="max-h-[500px] overflow-y-auto p-4 text-center">
+            <h3 className="text-2xl sm:text-3xl font-bold text-movie_color mb-4">
               {name} Biography
             </h3>
-            <p className="text-xs text-left sm:text-center sm:text-sm md:text-base text-text_color leading-relaxed tracking-wide">
-              {biography || `no Biography Available for this actor`}
+            <p className="text-sm sm:text-base text-text_color leading-relaxed tracking-wide">
+              {biography || "No biography available for this actor"}
             </p>
           </div>
         ) : (
-          <div className="flex gap-3 mt-4 mx-auto items-center overflow-y-auto h-[450px] flex-col text-center">
-            <h3 className="text-movie_color font-bold text-base sm:text-2xl">
-              {" "}
+          <div className="max-h-[500px] overflow-y-auto p-4 text-center">
+            <h3 className="text-2xl sm:text-3xl font-bold text-movie_color mb-4">
               Info About {name}
             </h3>
-            <div className="w-full overflow-hidden rounded-lg border-2 border-movie_color shadow-md">
-              <table className="w-full border-collapse border-2  border-movie_color text-sm text-text_color text-center">
+            <div className="w-full mx-auto max-w-md rounded-xl border border-movie_color/50 bg-primary/30 backdrop-blur-sm shadow-md">
+              <table className="w-full text-sm text-text_color">
                 <tbody>
-                  <tr className="border-b border-2 border-movie_color ">
-                    <td className="py-2 px-4 text-movie_color border-movie_color border-2  font-extrabold text-xs sm:text-base">
-                      Name
-                    </td>
-                    <td className="font-bold sm:text-base text-xs">{name}</td>
+                  <tr className="border-b border-movie_color/30">
+                    <td className="py-3 px-4 font-semibold text-movie_color">Name</td>
+                    <td className="py-3 px-4 font-medium">{name}</td>
                   </tr>
-                  <tr className="border-b border-2 border-movie_color">
-                    <td className="py-2 px-4 text-movie_color border-movie_color border-2 font-extrabold text-xs sm:text-base">
-                      Age
-                    </td>
-                    <td className=" font-bold sm:text-base text-xs">
-                      {getActorAge(birthday, deathday || ``)}
+                  <tr className="border-b border-movie_color/30">
+                    <td className="py-3 px-4 font-semibold text-movie_color">Age</td>
+                    <td className="py-3 px-4 font-medium">
+                      {getActorAge(birthday, deathday || "")}
                     </td>
                   </tr>
-                  <tr className="border-b border-2 border-movie_color">
-                    <td className="py-2 px-4 text-movie_color border-movie_color border-2 font-extrabold text-xs sm:text-base">
-                      profession
-                    </td>
-                    <td className="font-bold sm:text-base text-xs">
-                      {known_for_department === `Acting` ? `Actor` : `Director`}
+                  <tr className="border-b border-movie_color/30">
+                    <td className="py-3 px-4 font-semibold text-movie_color">Profession</td>
+                    <td className="py-3 px-4 font-medium">
+                      {known_for_department === "Acting" ? "Actor" : "Director"}
                     </td>
                   </tr>
-                  <tr className="border-b border-2 border-movie_color">
-                    <td className="py-2 px-4 text-movie_color border-movie_color border-2 font-extrabold text-xs sm:text-base">
-                      Gender
-                    </td>
-                    <td className="font-bold sm:text-base text-xs">
-                      {gender === 1
-                        ? "Female"
-                        : gender === 2
-                        ? "Male"
-                        : `NoN Binary`}
+                  <tr className="border-b border-movie_color/30">
+                    <td className="py-3 px-4 font-semibold text-movie_color">Gender</td>
+                    <td className="py-3 px-4 font-medium">
+                      {gender === 1 ? "Female" : gender === 2 ? "Male" : "Non-Binary"}
                     </td>
                   </tr>
-                  <tr className="border-b border-2 border-movie_color">
-                    <td className="py-2 px-4 text-movie_color border-movie_color border-2  font-extrabold text-xs sm:text-base">
-                      Born In
-                    </td>
-                    <td className="font-bold sm:text-base text-xs">{place_of_birth}</td>
+                  <tr className="border-b border-movie_color/30">
+                    <td className="py-3 px-4 font-semibold text-movie_color">Born In</td>
+                    <td className="py-3 px-4 font-medium">{place_of_birth}</td>
                   </tr>
                   {deathday && (
-                    <tr className="border-b border-2 border-movie_color">
-                      <td className="py-2 px-4 text-movie_color border-movie_color border-2 font-extrabold text-xs sm:text-base">
-                        Died At
-                      </td>
-                      <td className="font-bold sm:text-base text-xs">{deathday}</td>
+                    <tr className="border-b border-movie_color/30">
+                      <td className="py-3 px-4 font-semibold text-movie_color">Died At</td>
+                      <td className="py-3 px-4 font-medium">{deathday}</td>
                     </tr>
                   )}
-
-                  <tr className="border-b border-2 border-movie_color">
-                    <td className="py-2 px-4 text-movie_color border-movie_color border-2 font-extrabold text-xs sm:text-base">
-                      Birth Day
-                    </td>
-                    <td className=" font-bold sm:text-base text-xs">{birthday}</td>
+                  <tr>
+                    <td className="py-3 px-4 font-semibold text-movie_color">Birthday</td>
+                    <td className="py-3 px-4 font-medium">{birthday}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p className="text-base font-bold sm:text-lg">
+            <p className="text-lg font-semibold text-secondary_text_color mt-6">
               Follow <span className="text-movie_color">{name}</span>
             </p>
-            <div className="flex gap-2 justify-center flex-wrap ">
+            <div className="flex justify-center gap-3 mt-4 flex-wrap">
               {data?.twitter_id && (
                 <Link
-                  target={`_blank`}
-                  href={`https://twitter.com/${data?.twitter_id}`}
-                  className="p-2 transition-all rounded-full border border-movie_color hover:bg-movie_color_hover hover:text-white text-movie_color"
+                  target="_blank"
+                  href={`https://twitter.com/${data.twitter_id}`}
+                  className="p-2.5 bg-primary rounded-full border border-movie_color text-movie_color hover:bg-movie_color hover:text-secondary_text_color transition-all duration-300"
                 >
-                  <FaTwitter size={25} />
+                  <FaTwitter size={20} />
                 </Link>
               )}
               {data?.facebook_id && (
                 <Link
-                  target={`_blank`}
-                  href={`https://www.facebook.com/${data?.facebook_id}`}
-                  className="p-2 transition-all rounded-full border border-movie_color hover:bg-movie_color_hover hover:text-white text-movie_color"
+                  target="_blank"
+                  href={`https://www.facebook.com/${data.facebook_id}`}
+                  className="p-2.5 bg-primary rounded-full border border-movie_color text-movie_color hover:bg-movie_color hover:text-secondary_text_color transition-all duration-300"
                 >
-                  <FaFacebook size={25} />
+                  <FaFacebook size={20} />
                 </Link>
               )}
               {data?.instagram_id && (
                 <Link
-                  target={`_blank`}
+                  target="_blank"
                   href={`https://instagram.com/${data.instagram_id}`}
-                  className="p-2 transition-all rounded-full border border-movie_color hover:bg-movie_color_hover hover:text-white text-movie_color"
+                  className="p-2.5 bg-primary rounded-full border border-movie_color text-movie_color hover:bg-movie_color hover:text-secondary_text_color transition-all duration-300"
                 >
-                  <FaInstagram size={25} />
+                  <FaInstagram size={20} />
                 </Link>
               )}
               {data?.youtube_id && (
                 <Link
-                  target={`_blank`}
+                  target="_blank"
                   href={`https://www.youtube.com/${data.youtube_id}`}
-                  className="p-2 transition-all rounded-full border border-movie_color hover:bg-movie_color_hover hover:text-white text-movie_color"
+                  className="p-2.5 bg-primary rounded-full border border-movie_color text-movie_color hover:bg-movie_color hover:text-secondary_text_color transition-all duration-300"
                 >
-                  <FaYoutube size={25} />
+                  <FaYoutube size={20} />
                 </Link>
               )}
               {data?.imdb_id && (
                 <Link
-                  target={`_blank`}
-                  href={`https://www.imdb.com/name/${data?.imdb_id}`}
-                  className="p-2 transition-all rounded-full border border-movie_color hover:bg-movie_color_hover hover:text-white text-movie_color"
+                  target="_blank"
+                  href={`https://www.imdb.com/name/${data.imdb_id}`}
+                  className="p-2.5 bg-primary rounded-full border border-movie_color text-movie_color hover:bg-movie_color hover:text-secondary_text_color transition-all duration-300"
                 >
-                  <FaImdb size={25} />
+                  <FaImdb size={20} />
                 </Link>
               )}
             </div>
           </div>
         )}
-        <div className="hidden sm:block">
-          <button
-            onClick={() => setCurrentTab(`info`)}
-            className={`absolute -left-[70px] w-[70px] top-1/2 -translate-y-1/2  bg-primary transition-all  ${
-              currentTab === `info`
-                ? `translate-x-0 opacity-100 text-movie_color`
-                : `translate-x-2 opacity-50 hover:translate-x-1 hover:opacity-60`
-            } w-[60px] text-center rounded-l-lg h-10 text-xs flex items-center justify-center font-bold`}
-          >
-            Info
-          </button>
-          <button
-            onClick={() => setCurrentTab(`biography`)}
-            className={`absolute -left-[70px] top-[60%] w-[70px] -translate-y-1/2 bg-primary transition-all  ${
-              currentTab === `biography`
-                ? `translate-x-0 opacity-100 text-movie_color`
-                : `translate-x-2 opacity-50 hover:translate-x-1 hover:opacity-60`
-            } text-center rounded-l-lg h-10 font-bold flex items-center justify-center text-xs`}
-          >
-            Biography
-          </button>
-        </div>
       </div>
     </>
   );

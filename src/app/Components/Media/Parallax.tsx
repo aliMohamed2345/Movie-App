@@ -73,7 +73,7 @@ function Parallax() {
     <div
       onMouseEnter={() => setShowControls(true)}
       onMouseLeave={() => setShowControls(false)}
-      className="relative w-full min-h-[750px] overflow-hidden rounded-sm shadow-lg"
+      className="relative w-full min-h-[700px] overflow-hidden rounded-2xl shadow-2xl"
     >
       {loading ? (
         <CarouseLoading />
@@ -83,10 +83,10 @@ function Parallax() {
             <motion.div
               key={fetchedMovies[currentIndex]?.id}
               className="absolute inset-0"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.7 }}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.1 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <img
                 loading="lazy"
@@ -95,15 +95,15 @@ function Parallax() {
                   fetchedMovies[currentIndex].title ||
                   fetchedMovies[currentIndex].name
                 }
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover brightness-75"
               />
-              <div className="absolute inset-0 bg-black/70 rounded-sm" />
-              <div className="absolute bottom-40 sm:left-2 left-0 text-center sm:text-left sm:w-[500px] w-full text-white px-5 py-3 rounded-lg overflow-hidden min-h-[200px]">
-                <h3 className="font-bold text-lg sm:text-xl text-movie_color">
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/50 to-transparent" />
+              <div className="absolute bottom-10 left-4 sm:left-8 max-w-[90%] sm:max-w-[600px] text-secondary_text_color p-6 rounded-xl bg-primary/30 backdrop-blur-md">
+                <h3 className="font-bold text-2xl sm:text-3xl tracking-tight text-movie_color">
                   {fetchedMovies[currentIndex].title ||
                     fetchedMovies[currentIndex].name}
                 </h3>
-                <div className="flex gap-2 flex-wrap justify-center sm:justify-start my-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3 mt-4 justify-start">
                   {fetchedMovies[currentIndex].genre_ids.map((id) => (
                     <Link
                       href={{
@@ -115,24 +115,26 @@ function Parallax() {
                         query: { media, genre: id },
                       }}
                       key={id}
-                      className=" bg-movie_color rounded-md text-white p-2 font-semibold hover:bg-movie_color_hover transition-all"
+                      className="px-3 py-1.5 bg-movie_color text-sm font-semibold rounded-full hover:bg-movie_color_hover text-secondary_text_color transition-all duration-300"
                     >
                       {moviesGenres[id as keyof typeof moviesGenres]}
                     </Link>
                   ))}
                 </div>
-                <p className="flex pb-2 justify-center sm:justify-start">
-                  <span className="flex gap-0.5 items-center pr-1">
+                <div className="flex items-center gap-4 mt-4">
+                  <span className="flex items-center gap-1 text-lg text-secondary_text_color">
+                    <FaStar className="text-yellow-400" />
                     {fetchedMovies[currentIndex].vote_average.toFixed(1)}
-                    <FaStar className="text-yellow-500" />
                   </span>
-                  | {`${fetchedMovies[currentIndex].popularity.toFixed(0)}K`}
-                </p>
-                <p className="line-clamp-3 overflow-hidden text-ellipsis mb-5">
+                  <span className="text-text_color">
+                    {`${fetchedMovies[currentIndex].popularity.toFixed(0)}K Views`}
+                  </span>
+                </div>
+                <p className="mt-4 text-text_color line-clamp-3">
                   {fetchedMovies[currentIndex].overview}
                 </p>
                 <Link
-                  className="p-2 text-xl hover:bg-movie_color_hover transition-all bg-movie_color rounded-md"
+                  className="mt-6 inline-block px-6 py-3 bg-movie_color rounded-full text-lg font-semibold hover:bg-movie_color_hover text-secondary_text_color transition-all duration-300"
                   href={{
                     pathname: `/${media}/${fetchedMovies[currentIndex].id}`,
                     query: { media, id: fetchedMovies[currentIndex].id },
@@ -149,35 +151,41 @@ function Parallax() {
       {/* Navigation Controls */}
       <button
         onClick={prevSlide}
-        className={`absolute top-1/2 opacity-0 left-0 -translate-y-1/2 transition-all bg-black/50 p-2 h-16 rounded-e-lg text-white ${
-          showControls && "opacity-100"
+        className={`absolute top-1/2 left-4 -translate-y-1/2 bg-primary/50 p-4 rounded-full text-secondary_text_color transition-all duration-300 ${
+          showControls ? "opacity-100 scale-100" : "opacity-0 scale-75"
         }`}
       >
-        <FaChevronLeft size={22} />
+        <FaChevronLeft size={24} />
       </button>
       <button
         onClick={nextSlide}
-        className={`absolute opacity-0 top-1/2 transition-all right-0 -translate-y-1/2 bg-black/50 p-2 h-16 rounded-s-lg text-white ${
-          showControls && "opacity-100"
+        className={`absolute top-1/2 right-4 -translate-y-1/2 bg-primary/50 p-4 rounded-full text-secondary_text_color transition-all duration-300 ${
+          showControls ? "opacity-100 scale-100" : "opacity-0 scale-75"
         }`}
       >
-        <FaChevronRight size={22} />
+        <FaChevronRight size={24} />
       </button>
 
       {/* Thumbnails / Indicators */}
       <div
-        className={`absolute bottom-5 w-full flex justify-center gap-2 opacity-0 transition-all duration-300 ${
-          showControls && "opacity-100"
+        className={`absolute bottom-6 w-full flex justify-center gap-3 transition-all duration-300 ${
+          showControls ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}
       >
         {fetchedMovies.map((movie, index) => (
-          <button key={index} onClick={() => setCurrentIndex(index)}>
+          <button
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className="group relative"
+          >
             <img
               loading="lazy"
               src={`${process.env.NEXT_PUBLIC_BASE_IMAGE_URL}/w185${movie.poster_path}`}
               alt={movie.original_title}
-              className={`w-[40px] h-[60px] sm:w-[70px] sm:h-[100px] rounded-md transition-all hover:opacity-100 ${
-                index === currentIndex ? "opacity-100" : "opacity-40"
+              className={`w-16 h-24 sm:w-20 sm:h-28 rounded-lg transition-all duration-300 group-hover:scale-110 ${
+                index === currentIndex
+                  ? "opacity-100 ring-2 ring-movie_color"
+                  : "opacity-60"
               }`}
             />
           </button>
